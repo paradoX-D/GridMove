@@ -186,7 +186,7 @@ firstRun:
     GoSub,AboutHelp
     GoSub,WriteIni
     msgbox,64,%info_firstrun_title%,%info_firstrun%
-    settimer, helper,100
+    ;settimer, helper,100
     
 WriteIni:
   IfNotExist,%ScriptDir%

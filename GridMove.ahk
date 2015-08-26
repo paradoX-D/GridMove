@@ -61,7 +61,6 @@
   GoSub,setlanguage
   GoSub, ReadIni
 
-  AeroEnabled := loadAero()
   GoSub,setlanguage
 
   SetWinDelay, 0
@@ -105,8 +104,10 @@
     Hotkey, %CommandHotkey%, Command
 
   If MButtonDrag
-    Hotkey, MButton, MButtonMove
-
+  {
+    Hotkey, #MButton, MButtonMove
+	Hotkey, *RButton, fixRButton
+  }
   If UseFastMove
     GoSub,DefineHotkeys
 
@@ -375,16 +376,7 @@ DropZoneMode:
 
         If not canceled
         {
-          if(!AeroEnabled)
-            WinMove,ahk_id %gui2hwnd%, ,%GridLeft%,%GridTop%,%GridWidth%,%GridHeight%
-          else
-          {
-            left:=GridLeft + 3
-            top:=GridTop + 3
-            width:=GridWidth - 6
-            height:=GridHeight - 6
-            WinMove,ahk_id %gui2hwnd%, ,%Left%,%Top%,%Width%,%Height%
-          }
+          WinMove,ahk_id %gui2hwnd%, ,%GridLeft%,%GridTop%,%GridWidth%,%GridHeight%
         }
         flagLButton:=false
         break
@@ -404,11 +396,8 @@ return
 
 hideGui2()
 {
-  global AeroEnabled
-  if(!AeroEnabled)
-    Gui,2: +ToolWindow +AlwaysOnTop -Disabled -SysMenu -Caption
-  else
-    Gui,2: +ToolWindow +AlwaysOnTop -Disabled -SysMenu
+  Gui,2: +ToolWindow +AlwaysOnTop -Disabled -SysMenu -Caption
+
   Gui,2: Show, x-10000 y-10000 w0 h0 NoActivate,% A_SPACE
 }
   
@@ -420,6 +409,18 @@ cancel:
     Gui,2:Hide
   }
 return
+
+fixRButton:
+	tmpMBtn := 2
+	getKeyState, tmpMBtn, MButton, P
+	
+	if tmpMBtn = U
+		{
+		sendinput,{RButton down}
+	    Keywait,RButton
+	    sendinput,{RButton up}
+		return
+		}
   
 ;*******************Mbutton method
 
@@ -650,6 +651,11 @@ SnapWindow:
 
       if ShouldUseSizeMoveMessage(WinClass)
         SendMessage WM_ENTERSIZEMOVE, , , ,ahk_id %windowid%
+      
+      ;Modify the width and position for windows 10.
+      GridHeight := GridHeight + 8
+      GridWidth := GridWidth + 14
+      GridLeft := GridLeft - 7
 
       WinMove, ahk_id %windowid%, ,%GridLeft%,%GridTop%,%GridWidth%,%GridHeight%,
 
@@ -935,17 +941,11 @@ creategroups:
 
   Gui,2: +lastfound
   gui2hwnd:=WinExist() ;handle.
-  if(!AeroEnabled)
-  {
-    WinSet, Transparent, %Transparency%,
-    Gui,2: +ToolWindow +AlwaysOnTop -Disabled -SysMenu -Caption
-    Gui,2: Margin,0,0
-  }
-  else 
-  {
-    Gui,2: Color, 0
-    Aero_ChangeFrameAreaAll(gui2hwnd) ;call the Function
-  }
+
+  WinSet, Transparent, %Transparency%,
+  Gui,2: +ToolWindow +AlwaysOnTop -Disabled -SysMenu -Caption
+  Gui,2: Margin,0,0
+
   Gui,hide
 return
  
@@ -1566,27 +1566,9 @@ return
 AddCurrentToIgnoreCancel:
   Ignore_added := true
 return
-
-loadAero()
-{
-  If(A_OSVersion!="WIN_VISTA" && A_OSVersion!="WIN_7")
-    return false
-
-  If(!Aero_StartUp()) ;start the Lib
-    return false
-
-  If(!Aero_IsEnabled()) ;Make sure that
-    return false
-
-  If(Aero_GetDWMTrans())
-    return false
-
-  return true
-}
   
 #include files.ahk
 #include command.ahk
 #include calc.ahk
-#include helper.ahk
-#Include Aero_lib.ahk
+;#include helper.ahk
 #include strings.ahk
