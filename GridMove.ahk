@@ -830,10 +830,10 @@ creategroups:
     tempRight := triggerRight - 1
     tempHeight := tempBottom - tempTop +2
     tempWidth  := tempRight - tempLeft +2
-    Gui, add, Picture, Y%tempTop%    X%tempLeft% W%tempWidth% H3 ,%A_ScriptDir%\Images\%horizontalGrid%
-    Gui, add, Picture, Y%tempBottom% X%tempLeft% W%tempWidth% H3 ,%A_ScriptDir%\Images\%horizontalGrid%
-    Gui, add, Picture, Y%tempTop% X%tempLeft%  W3 H%tempHeight% ,%A_ScriptDir%\Images\%verticalGrid%
-    Gui, add, Picture, Y%tempTop% X%tempRight% W3 H%tempHeight% ,%A_ScriptDir%\Images\%verticalGrid%
+    Gui, add, Picture, Y%tempTop%    X%tempLeft% W%tempWidth% H1 ,%A_ScriptDir%\Images\%horizontalGrid%
+    Gui, add, Picture, Y%tempBottom% X%tempLeft% W%tempWidth% H1 ,%A_ScriptDir%\Images\%horizontalGrid%
+    Gui, add, Picture, Y%tempTop% X%tempLeft%  W1 H%tempHeight% ,%A_ScriptDir%\Images\%verticalGrid%
+    Gui, add, Picture, Y%tempTop% X%tempRight% W1 H%tempHeight% ,%A_ScriptDir%\Images\%verticalGrid%
     
     shadowleft := textleft + 1
     shadowtop := texttop + 1
