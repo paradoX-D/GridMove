@@ -1,5 +1,12 @@
-GridMove
+GridMove - Windows 10 version
 ========
+
+This is a modified version of GridMove. I changed some of the window sizing math to account for the windows in Windows 10 being slightly smaller than the size specified in the WinMove function.
+
+Also, since I only use the middle mouse button method, and because I found middle mouse button to be to easy to trigger, I modified this to be middle mouse + right mouse button to trigger the grids.
+
+------------------------
+**Below is the original readme:**
 
 GridMove is a Windows program that aims at making windows management easier. It helps you with this task by defining a visual grid on your desktop, to which you can easily snap windows. It is built with [AutoHotkey](http://www.autohotkey.com "AutoHotKey"), a scripting language for desktop automation for Windows.
 
